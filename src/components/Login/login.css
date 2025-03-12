@@ -1,0 +1,146 @@
+/* Contenedor principal */
+.login-container {
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 30px;
+  border-radius: 20px;
+  background-color: #0097a7; /* Fondo azul similar al dashboard */
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada */
+  border: 2px solid #007bff;
+  position: relative;
+}
+
+/* Logo */
+.logo {
+  width: 100px; /* Tamaño más grande */
+  height: 100px;
+  border-radius: 50%;
+  background-color: white;
+  padding: 15px;
+  margin: -60px auto 20px auto; /* Ajusta la posición del logo */
+  display: block;
+  border: 4px solid white;
+  object-fit: contain; /* Evita que el logo se deforme */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra para el logo */
+}
+
+/* Estilo para los títulos */
+.login-container h2 {
+  color: white;
+  font-size: 24px; /* Tamaño más grande */
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+/* Etiquetas de entrada */
+.login-container label {
+  display: block;
+  text-align: left;
+  color: white;
+  font-weight: bold;
+  margin-bottom: 8px;
+  font-size: 14px;
+  margin-left: 15px;
+}
+
+/* Campos de entrada */
+.login-container input {
+  width: 90%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: none;
+  border-radius: 25px; /* Bordes más redondeados */
+  background: white;
+  text-align: left;
+  font-weight: bold;
+  font-size: 14px;
+  color: black;
+  display: block;
+  margin: 0 auto 15px auto; /* Centra los inputs */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra para los inputs */
+}
+
+/* Contenedor de contraseña */
+.password-container {
+  position: relative;
+  width: 90%;
+  margin: 0 auto 15px auto; /* Centra el contenedor de contraseña */
+}
+
+.password-container input {
+  width: 100%; /* Asegura que el input ocupe todo el ancho */
+  padding-right: 12px; /* Espacio normal */
+}
+
+/* Botón de mostrar/ocultar contraseña */
+.password-toggle {
+  display: block;
+  margin: 5px auto 0 auto; /* Centrado debajo del campo */
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: white; /* Color blanco para mayor contraste */
+  font-size: 12px; /* Tamaño pequeño */
+  text-align: center;
+  transition: color 0.3s ease; /* Transición suave */
+}
+
+.password-toggle:hover {
+  color: #002a80; /* Cambio de color al pasar el mouse */
+}
+
+/* Botones */
+.login-container button {
+  width: 90%;
+  padding: 12px;
+  margin-top: 15px;
+  border: none;
+  border-radius: 25px; /* Bordes más redondeados */
+  cursor: pointer;
+  background-color: #002a80; /* Azul más oscuro */
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  display: block;
+  margin: 0 auto 15px auto;
+  transition: background-color 0.3s ease; /* Transición suave */
+}
+
+.login-container button:hover {
+  background-color: #001f5f; /* Color más oscuro al pasar el mouse */
+}
+
+/* Botón de Google */
+.google-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  color: black;
+  font-weight: bold;
+  width: 90%;
+  margin: 15px auto 0 auto; /* Centrado */
+  border-radius: 25px; /* Bordes más redondeados */
+  padding: 12px;
+  transition: background-color 0.3s ease; /* Transición suave */
+}
+
+.google-button:hover {
+  background-color: #f0f0f0; /* Fondo más claro al pasar el mouse */
+}
+
+/* Mensaje de error */
+.error {
+  color: #ff4757; /* Rojo más vibrante */
+  font-size: 14px;
+  text-align: center;
+  margin-top: 10px;
+  font-weight: bold; /* Texto en negrita */
+}
+
+/* Estilo del contenedor para darle espacio */
+.container {
+  padding: 20px;
+  border-radius: 10px;
+}

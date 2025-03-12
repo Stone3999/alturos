@@ -1,0 +1,268 @@
+/* General */
+.dashboard-container {
+    background-color: #f0f4f8;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-bottom: 20px;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Barra superior */
+.dashboard-header {
+    width: 100%;
+    background-color: #0097a7;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 32px;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.icon-container {
+    display: flex;
+    gap: 20px;
+    font-size: 22px;
+    cursor: pointer;
+    align-items: center;
+}
+
+.notification-icon {
+    position: relative;
+}
+
+.notification-badge {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background-color: #ff4757;
+    color: white;
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 50%;
+}
+
+/* Contenido principal */
+.dashboard-content {
+    width: 90%;
+    max-width: 1200px;
+    background-color: white;
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Sección de introducción */
+.intro-section {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+    margin-bottom: 40px;
+}
+
+.intro-text-container {
+    flex: 2;
+    text-align: left;
+}
+
+.intro-text {
+    margin-top: 10px;
+    font-size: 16px;
+    color: #333;
+    text-align: justify;
+    line-height: 1.6;
+}
+
+.elderly-image-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.elderly-image {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Tarjetas informativas */
+.info-cards {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.card {
+    flex: 1;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+}
+
+.card-icon {
+    font-size: 32px;
+    color: #0097a7;
+    margin-bottom: 10px;
+}
+
+.card h3 {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.card p {
+    font-size: 14px;
+    color: #666;
+}
+
+/* Imagen principal */
+.image-container {
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+.clickable-image {
+    width: 300px;
+    height: auto;
+    transition: transform 0.3s ease-in-out;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.clickable-image:hover {
+    transform: scale(1.05);
+}
+
+.image-text {
+    font-size: 14px;
+    color: gray;
+    margin-top: 5px;
+}
+
+/* Beneficios */
+.benefits-section {
+    margin-top: 20px;
+    text-align: left;
+}
+
+.benefits-section h3 {
+    color: #0097a7;
+    margin-top: 15px;
+}
+
+.benefits-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.benefits-section li {
+    margin: 5px 0;
+    font-size: 16px;
+    color: #333;
+}
+
+/* Estilos para el menú desplegable */
+.menu-icon {
+    position: relative;
+  }
+  
+  .dropdown-menu {
+    position: absolute;
+    top: 30px;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+  }
+  
+  .dropdown-menu button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background: none;
+    text-align: left;
+    cursor: pointer;
+    font-size: 14px;
+    color: #333;
+  }
+  
+  .dropdown-menu button:hover {
+    background-color: #f0f0f0;
+  }
+
+  /* Estilos para el menú desplegable */
+.menu-icon {
+    position: relative;
+  }
+  
+  .dropdown-menu {
+    position: absolute;
+    top: 30px;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 10px; /* Bordes más redondeados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    min-width: 150px; /* Ancho mínimo para el menú */
+  }
+  
+  .dropdown-menu button {
+    display: block;
+    width: 100%;
+    padding: 10px 15px; /* Más padding para mejor apariencia */
+    border: none;
+    background: none;
+    text-align: left;
+    cursor: pointer;
+    font-size: 14px;
+    color: #333;
+    transition: background-color 0.3s ease; /* Transición suave */
+  }
+  
+  .dropdown-menu button:hover {
+    background-color: #f0f0f0; /* Fondo al pasar el mouse */
+    color: #0097a7; /* Cambio de color al pasar el mouse */
+    border-radius: 5px; /* Bordes redondeados al pasar el mouse */
+  }
+  
+  /* Estilo específico para el botón de cerrar sesión */
+  .dropdown-menu button.logout-button {
+    color: #ff4757; /* Color rojo para el botón de cerrar sesión */
+    font-weight: bold; /* Texto en negrita */
+  }
+  
+  .dropdown-menu button.logout-button:hover {
+    background-color: #ff4757; /* Fondo rojo al pasar el mouse */
+    color: white; /* Texto blanco al pasar el mouse */
+  }
+
+  /* Estilos para los íconos */
+.icon-container svg {
+    color: white; /* Color blanco para los íconos */
+    transition: color 0.3s ease; /* Transición suave */
+  }
+  
+  .icon-container svg:hover {
+    color: #002a80; /* Cambio de color al pasar el mouse */
+  }

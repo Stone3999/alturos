@@ -1,0 +1,18 @@
+{
+  "files": {
+    "main.css": "/~sansam225/alturos/static/css/main.4f81bb70.css",
+    "main.js": "/~sansam225/alturos/static/js/main.14fe3314.js",
+    "static/js/453.d7299241.chunk.js": "/~sansam225/alturos/static/js/453.d7299241.chunk.js",
+    "static/media/elderly.jpg": "/~sansam225/alturos/static/media/elderly.e5bb3ef23d0aebce8186.jpg",
+    "static/media/AlturOS.jpg": "/~sansam225/alturos/static/media/AlturOS.7e27dfaa905dbf587d9e.jpg",
+    "static/media/logo.png": "/~sansam225/alturos/static/media/logo.98ad6978464553563ed8.png",
+    "index.html": "/~sansam225/alturos/index.html",
+    "main.4f81bb70.css.map": "/~sansam225/alturos/static/css/main.4f81bb70.css.map",
+    "main.14fe3314.js.map": "/~sansam225/alturos/static/js/main.14fe3314.js.map",
+    "453.d7299241.chunk.js.map": "/~sansam225/alturos/static/js/453.d7299241.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.4f81bb70.css",
+    "static/js/main.14fe3314.js"
+  ]
+}

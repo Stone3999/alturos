@@ -1,35 +1,55 @@
 /* Contenedor principal */
 .registro-container {
   max-width: 400px;
-  margin: 50px auto;
-  padding: 20px;
+  margin: 60px auto 50px;
+  padding: 25px 20px;
   border-radius: 20px;
-  background-color: #0099ff; /* Fondo azul */
+  background-color: #0097a7; /* Fondo azul */
   text-align: center;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border: 2px solid #007bff;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  border: 2px solid #0097a7;
   position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.registro-container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.25);
 }
 
 /* Logo */
 .registro-container .logo {
   width: 80px;
   height: 80px;
-  border-radius: 50%;
+  border-radius: 0%;
   background-color: white;
-  padding: 10px;
-  margin: -45px auto 10px auto; /* Ajusta la posición del logo */
+  padding: 12px;
+  margin: -50px auto 15px auto; /* Posición ajustada */
   display: block;
-  border: 4px solid white;
-  object-fit: contain; /* Evita que el logo se deforme */
+  border: 2px solid white;
+  object-fit: contain;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease;
+}
+
+.registro-container .logo:hover {
+  transform: scale(0.5);
 }
 
 /* Estilo para los títulos */
 .registro-container h2 {
   color: white;
-  font-size: 22px;
+  font-size: 24px;
   font-weight: bold;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Contenedor de formularios */
+.form-group {
+  margin-bottom: 16px;
+  position: relative;
+  width: 100%;
 }
 
 /* Etiquetas de entrada */
@@ -38,33 +58,49 @@
   text-align: left;
   color: white;
   font-weight: bold;
-  margin-bottom: 5px;
+  margin-bottom: 6px;
   font-size: 14px;
-  margin-left: 15px;
+  margin-left: 20px;
+  transition: color 0.3s ease;
 }
 
 /* Campos de entrada */
 .registro-container input,
 .registro-container select {
   width: 90%;
-  padding: 12px;
-  margin-bottom: 10px;
+  padding: 14px 15px;
+  margin-bottom: 12px;
   border: none;
   border-radius: 20px;
   background: white;
   text-align: left;
-  font-weight: bold;
-  font-size: 14px;
-  color: black;
+  font-weight: 500;
+  font-size: 15px;
+  color: #333;
   display: block;
-  margin: 0 auto 10px auto; /* Centra los inputs */
+  margin: 0 auto 12px auto;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.registro-container input:focus,
+.registro-container select:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5), 0 4px 8px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+/* Estilo para placeholder */
+.registro-container input::placeholder {
+  color: #aaa;
+  font-weight: normal;
 }
 
 /* Botones */
 .registro-container button {
   width: 90%;
-  padding: 12px;
-  margin-top: 10px;
+  padding: 14px;
+  margin-top: 15px;
   border: none;
   border-radius: 20px;
   cursor: pointer;
@@ -73,11 +109,27 @@
   font-size: 16px;
   font-weight: bold;
   display: block;
-  margin: 0 auto 10px auto;
+  margin: 15px auto 10px auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
 }
 
 .registro-container button:hover {
   background-color: #001f5f;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.registro-container button:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Botón deshabilitado */
+.registro-container button:disabled {
+  background-color: #6684b1;
+  cursor: not-allowed;
+  transform: none;
 }
 
 /* Botón de Google */
@@ -86,22 +138,99 @@
   align-items: center;
   justify-content: center;
   background-color: white;
-  color: black;
+  color: #333;
   font-weight: bold;
   width: 90%;
-  margin: 10px auto 0 auto; /* Centrado */
+  margin: 12px auto 0 auto;
   border-radius: 20px;
-  padding: 12px;
+  padding: 12px 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
 }
 
 .registro-container .google-button:hover {
-  background-color: #f0f0f0;
+  background-color: #f5f5f5;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.registro-container .google-button img {
+  margin-right: 10px;
+  height: 20px;
 }
 
 /* Mensaje de error */
 .registro-container .error {
-  color: red;
+  color: #ff3333;
   font-size: 14px;
+  font-weight: 500;
   text-align: center;
-  margin-top: 10px;
+  margin: 8px 0;
+  padding: 8px 12px;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 10px;
+  border-left: 3px solid #ff3333;
+}
+
+/* Mensaje de error específico para campos */
+.error-text {
+  color: #ff3333;
+  font-size: 12px;
+  margin: -8px auto 8px;
+  width: 90%;
+  text-align: left;
+  padding-left: 10px;
+  font-weight: 500;
+}
+
+/* Input con error */
+.error-input {
+  border: 1px solid #ff3333 !important;
+  background-color: rgba(255, 51, 51, 0.05) !important;
+}
+
+/* Password hint */
+.password-hint {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 12px;
+  margin: -6px auto 12px;
+  width: 85%;
+  text-align: left;
+  padding-left: 15px;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .registro-container {
+    max-width: 90%;
+    margin: 50px auto 30px;
+    padding: 20px 15px;
+  }
+  
+  .registro-container .logo {
+    width: 50px;
+    height: 50px;
+    margin: -50px auto 15px;
+  }
+  
+  .registro-container h2 {
+    font-size: 20px;
+  }
+  
+  .registro-container input,
+  .registro-container select,
+  .registro-container button,
+  .registro-container .google-button {
+    width: 95%;
+  }
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.registro-container {
+  animation: fadeIn 0.5s ease-out;
 }

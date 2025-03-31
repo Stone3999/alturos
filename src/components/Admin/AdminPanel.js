@@ -1,15 +1,14 @@
 import React from "react";
+import { FaBoxOpen, FaChartLine, FaHistory, FaMicrochip, FaShoppingBag, FaSignOutAlt, FaUsers } from "react-icons/fa"; // Importamos los iconos
 import { useNavigate } from "react-router-dom";
 import "./AdminPanel.css";
-import { FaUsers, FaBoxOpen, FaMicrochip, FaSignOutAlt } from "react-icons/fa"; // Importamos los iconos
 
-export default function AdminPanel() {
+export default function AdminPanel({ onLogout }) {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    navigate("/"); // 🔹 Redirigir al login
+    onLogout(); // Llama a la función de cierre de sesión
+    navigate("/"); // Redirige al login
   };
 
   return (
@@ -24,7 +23,7 @@ export default function AdminPanel() {
 
       {/* 🔹 Secciones del panel */}
       <div className="admin-sections">
-        <div className="admin-card" onClick={() => navigate("/admin/Usuarios")}>
+        <div className="admin-card" onClick={() => navigate("/admin/usuarios")}>
           <FaUsers className="admin-icon" />
           <h2>Gestión de Usuarios</h2>
         </div>
@@ -35,6 +34,19 @@ export default function AdminPanel() {
         <div className="admin-card" onClick={() => navigate("/admin/dispositivos")}>
           <FaMicrochip className="admin-icon" />
           <h2>Reporte de Dispositivos</h2>
+        </div>
+        <div className="admin-card" onClick={() => navigate("/admin/ventas")}>
+          <FaShoppingBag className="admin-icon" />
+          <h2>Reporte de Ventas</h2>
+        </div>
+        {/* Botón para ver el historial de caídas */}
+        <div className="admin-card" onClick={() => navigate("/admin/historial")}>
+          <FaHistory className="admin-icon" />
+          <h2>Historial de Caídas</h2>
+        </div>
+        <div className="admin-card" onClick={() => navigate("/admin/graficas")}>
+          <FaChartLine className="admin-icon" />
+          <h2>Gráficas</h2>
         </div>
       </div>
     </div>

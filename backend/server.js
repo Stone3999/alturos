@@ -1,25 +1,44 @@
 const express = require("express");
 const cors = require("cors");
-const dotenv = require("dotenv");
+const loginRoutes = require("./routes/loginRoutes");
+const productosRoutes = require("./routes/productosRoutes");
+const adminRoutes = require("./routes/adminRoutes");
+const carroRoutes = require("./routes/carroRoutes");
 
-dotenv.config();
 const app = express();
 
-// Middleware
-app.use(cors());
-app.use(express.json());
-
-// Importar rutas
-const authRoutes = require("./routes/auth");
-app.use("/api/auth", authRoutes);
-
-// Ruta de prueba para verificar si el servidor está funcionando
-app.get("/", (req, res) => {
-  res.send("🚀 Servidor funcionando correctamente");
+// Debug logging middleware
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.url}`);
+  next();
 });
 
-// Iniciar servidor en el puerto 5000
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, "0.0.0.0", () => {
-  console.log(`🚀 Servidor corriendo en el puerto ${PORT}`);
+// CORS configuration
+app.use(cors({
+  origin: "http://localhost:3000",
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true // Enable credentials for cart session management
+}));
+
+// Body parser middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true })); // Support URL-encoded bodies
+
+
+
+// Routes configuration
+app.use("/api/auth", loginRoutes);
+app.use("/api/admin", adminRoutes);
+app.use("/api/productos", productosRoutes);
+app.use("/api/carro", carroRoutes);
+
+// Global error handler
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: "Something went wrong on the server" });
+});
+
+app.listen(5000, () => {
+  console.log("Server running at http://localhost:5000");
 });

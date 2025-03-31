@@ -1,22 +1,26 @@
 const mysql = require("mysql2");
 
-// Configurar la conexión a MySQL
-const db = mysql.createConnection({
+// Crear un pool de conexiones
+const pool = mysql.createPool({
   host: 'sql3.freesqldatabase.com',
-  user: 'sql3767184',
-  password: 'ZCNm4KR2mH',
-  database: 'sql3767184',
+  user: 'sql3769348',
+  password: 'ywW7bMR65H',
+  database: 'sql3769348',
   port: 3306,
-  connectTimeout: 20000 // Aumentar el tiempo de espera
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0,
+  connectTimeout: 20000 // Mantén esto si quieres
 });
 
-// Conectar a la base de datos
-db.connect((err) => {
+// Probar conexión una vez (opcional)
+pool.getConnection((err, connection) => {
   if (err) {
-    console.error("❌ Error conectando a la base de datos:", err);
-    return;
+    console.error("❌ Error conectando al pool MySQL:", err);
+  } else {
+    console.log("✅ Conectado al pool de base de datos MySQL");
+    connection.release();
   }
-  console.log("✅ Conectado a la base de datos MySQL");
 });
 
-module.exports = db;
+module.exports = pool;

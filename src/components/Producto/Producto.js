@@ -1,128 +1,184 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { FaShoppingCart, FaBars } from "react-icons/fa";
-import "./producto.css"; // Importamos los estilos
-import AlturOSImage from "../../assets/AlturOS.jpg"; // Imagen por defecto en caso de error
+import { useNavigate, useParams } from "react-router-dom";
+import AlturOSImage from "../../assets/AlturOS.jpg";
+import "./producto.css";
 
 export default function Producto() {
-  const [producto, setProducto] = useState(null);
-  const [currentImage, setCurrentImage] = useState(AlturOSImage); // Imagen actual
-  const [carritoMensaje, setCarritoMensaje] = useState(""); // Mensaje de confirmación
   const navigate = useNavigate();
 
-  // 🔹 Simulación de obtener el ID del Usuario desde localStorage o autenticación
-  const userId = JSON.parse(localStorage.getItem("user"))?.id;
+  const [producto, setProducto] = useState(null);
+  const [currentImage, setCurrentImage] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Obtener el id del producto desde los parámetros de la URL
+  const { id } = useParams();
+  const productId = id || 1; // Si no hay ID en la URL, usar 1 como predeterminado
 
   useEffect(() => {
-    console.log("🔍 Enviando solicitud para obtener el producto...");
+    setLoading(true);
+    setError(null);
 
-    fetch("http://localhost:5000/api/auth/producto/1") // Asegúrate de que este endpoint es correcto
-      .then(response => {
-        console.log("🔍 Respuesta del servidor:", response);
-
+    // Hacer la solicitud al backend usando el ID del producto
+    fetch(`http://localhost:5000/api/productos/${productId}`)
+      .then((response) => {
         if (!response.ok) {
-          throw new Error(`❌ Error HTTP: ${response.status}`);
+          throw new Error("Producto no encontrado");
         }
         return response.json();
       })
-      .then(data => {
-        console.log("✅ Producto recibido:", data);
-
-        if (!data || Object.keys(data).length === 0) {
-          console.error("❌ Error: Producto vacío o no válido.");
-          return;
-        }
-
+      .then((data) => {
         setProducto(data);
         setCurrentImage(data.prod_img1 || AlturOSImage);
+        setLoading(false);
       })
-      .catch(error => {
-        console.error("❌ Error obteniendo el producto:", error);
+      .catch((error) => {
+        console.error("Error obteniendo el producto:", error);
+        setError(error.message);
+        setLoading(false);
+        setProducto(null);
       });
-  }, []);
+  }, [productId]); // Recargar cuando cambie el ID del producto
 
-  // 🔹 Manejar el cambio de imagen
   const changeImage = (img) => {
     setCurrentImage(img);
   };
 
-  // 🔹 Función para agregar al carrito
+  // Función para agregar al carrito
   const agregarAlCarrito = async () => {
-    if (!userId) {
-      alert("Debes iniciar sesión para agregar productos al carrito.");
+    const storedUser = localStorage.getItem("user");
+  
+    if (!storedUser) {
+      alert("⚠️ Debes iniciar sesión para agregar productos al carrito");
       return;
     }
-
+  
+    let us_id;
+  
     try {
-      console.log("🛒 Agregando al carrito...", { userId, prod_id: producto.prod_id });
-
-      const response = await fetch("http://localhost:5000/api/auth/carrito/agregar", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, prod_id: producto.prod_id }),
-      });
-
-      const data = await response.json();
-      console.log("🛒 Respuesta del carrito:", data);
-
-      if (response.ok) {
-        setCarritoMensaje("✅ Producto agregado al carrito");
-      } else {
-        setCarritoMensaje("⚠️ " + data.error);
+      const user = JSON.parse(storedUser);
+      // Para usuarios normales: user.id
+      // Para usuarios de Google: user.uid
+      us_id = user.id || user.uid;
+  
+      if (!us_id) {
+        alert("⚠️ No se pudo determinar el ID del usuario");
+        return;
       }
     } catch (error) {
-      console.error("❌ Error agregando al carrito:", error);
-      setCarritoMensaje("❌ Error en la conexión con el servidor");
+      console.error("❌ Error leyendo el usuario de localStorage:", error);
+      alert("⚠️ Hubo un problema con tu sesión. Inicia sesión de nuevo.");
+      return;
+    }
+  
+    const car_cantidad = 1;
+  
+    try {
+      const response = await fetch("http://localhost:5000/api/carro/carrito", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          us_id,
+          prod_id: producto.prod_id,
+          car_cantidad
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error("❌ No se pudo agregar el producto al carrito");
+      }
+  
+      alert("✅ Producto agregado al carrito");
+    } catch (error) {
+      console.error("Error al agregar producto al carrito:", error);
+      setError(error.message);
     }
   };
+  
 
   return (
-    <div className="dashboard-container">
-      {/* Barra superior */}
-      <div className="dashboard-header">
-        <h1>Detalles del Producto</h1>
-        <div className="icon-container">
-          {/* 🔹 Redirigir al carrito al hacer clic */}
-          <FaShoppingCart className="cart-icon" onClick={() => navigate("/carrito")} />
-          <FaBars />
-        </div>
-      </div>
+    <div className="producto-container">
+      <h1>Detalles del Producto</h1>
 
-      {/* Contenido del producto */}
       <div className="producto-content">
-        {producto ? (
+        {loading ? (
+          <p className="loading-text">Cargando información del producto...</p>
+        ) : error ? (
+          <p className="error-text">Error: {error}</p>
+        ) : producto ? (
           <>
-            <h2>✅ Producto cargado: {producto.prod_nom}</h2> {/* 🔹 Agregado para depuración */}
-            {/* Imagen del producto */}
             <div className="producto-image-container">
-              <img src={currentImage} alt={producto.prod_nom} className="producto-main-image" />
-              {/* Miniaturas de imágenes */}
+              <img 
+                src={currentImage || AlturOSImage} 
+                alt={producto.prod_nom} 
+                className="producto-main-image" 
+              />
               <div className="producto-thumbnails">
-                {producto.prod_img1 && <img src={producto.prod_img1} alt="Img 1" onClick={() => changeImage(producto.prod_img1)} />}
-                {producto.prod_img2 && <img src={producto.prod_img2} alt="Img 2" onClick={() => changeImage(producto.prod_img2)} />}
-                {producto.prod_img3 && <img src={producto.prod_img3} alt="Img 3" onClick={() => changeImage(producto.prod_img3)} />}
-                {producto.prod_img4 && <img src={producto.prod_img4} alt="Img 4" onClick={() => changeImage(producto.prod_img4)} />}
+                {producto.prod_img1 && (
+                  <img
+                    src={producto.prod_img1}
+                    alt="Imagen 1"
+                    className={currentImage === producto.prod_img1 ? "active" : ""}
+                    onClick={() => changeImage(producto.prod_img1)}
+                  />
+                )}
+                {producto.prod_img2 && (
+                  <img
+                    src={producto.prod_img2}
+                    alt="Imagen 2"
+                    className={currentImage === producto.prod_img2 ? "active" : ""}
+                    onClick={() => changeImage(producto.prod_img2)}
+                  />
+                )}
+                {producto.prod_img3 && (
+                  <img
+                    src={producto.prod_img3}
+                    alt="Imagen 3"
+                    className={currentImage === producto.prod_img3 ? "active" : ""}
+                    onClick={() => changeImage(producto.prod_img3)}
+                  />
+                )}
+                {producto.prod_img4 && (
+                  <img
+                    src={producto.prod_img4}
+                    alt="Imagen 4"
+                    className={currentImage === producto.prod_img4 ? "active" : ""}
+                    onClick={() => changeImage(producto.prod_img4)}
+                  />
+                )}
               </div>
             </div>
 
-            {/* Detalles del producto */}
             <div className="producto-info">
               <h2>{producto.prod_nom}</h2>
-              <p className="producto-description">{producto.prod_desc}</p>
-              <p className="producto-price">Precio: <strong>${producto.prod_precio}</strong></p>
-              <p className="producto-stock">Stock disponible: <strong>{producto.prod_stock}</strong></p>
+              <div className="producto-id">
+                <span>ID Producto: {producto.prod_id}</span>
+              </div>
               
-              {/* Botón para agregar al carrito */}
-              <button className="add-to-cart" onClick={agregarAlCarrito}>
-                Agregar al carrito
-              </button>
+              <div className="producto-price">
+                <h3>
+                  {/* Asegurándonos de que prod_precio sea un número antes de usar toFixed */}
+                  ${Number(producto.prod_precio).toFixed(2)}
+                </h3>
+              </div>
+              
+              <div className="producto-stock">
+                <span>Stock disponible: {producto.prod_stock}</span>
+              </div>
+              
+              <div className="producto-description">
+                <h4>Descripción:</h4>
+                <p>{producto.prod_desc || "No hay descripción disponible"}</p>
+              </div>
 
-              {/* Mostrar mensaje si el producto se agregó al carrito */}
-              {carritoMensaje && <p className="carrito-mensaje">{carritoMensaje}</p>}
+              <button onClick={agregarAlCarrito} className="add-to-cart-btn">Agregar al carrito</button>
+              <button className="boton-volver-admin text-align-center" onClick={() => navigate("/admin")}>Volver</button>
             </div>
           </>
         ) : (
-          <p className="loading-text">Cargando información del producto...</p>
+          <p className="producto-not-found">Producto no encontrado</p>
         )}
       </div>
     </div>

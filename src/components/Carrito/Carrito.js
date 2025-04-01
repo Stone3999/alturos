@@ -20,7 +20,7 @@ export default function Carrito() {
     if (userId !== undefined && userId !== null) {
       obtenerCarrito();
     }
-  }, [userId]);
+  }, [userId, obtenerCarrito]); //
 
   const obtenerCarrito = async () => {
     if (!userId) {

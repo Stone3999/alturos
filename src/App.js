@@ -72,6 +72,7 @@ function App() {
 
       <Routes>
         <Route path="/" element={<Login onLogin={handleLogin} />} />
+        
         <Route path="/registro" element={<Registro />} />
 
         {/* Rutas protegidas para Usuarios */}

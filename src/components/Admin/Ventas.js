@@ -16,7 +16,7 @@ const [ventas, setVentas] = useState([]);
     // 🔹 Obtener ventas desde el backend
     const obtenerVentas = async () => {
         try {
-        const response = await fetch("http://localhost:5000/api/admin/ventas");
+        const response = await fetch("http://backendalturos.onrender.com/api/admin/ventas");
 
         if (!response.ok) {
             throw new Error(`❌ Error HTTP: ${response.status}`);

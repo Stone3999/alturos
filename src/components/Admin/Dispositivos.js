@@ -13,7 +13,7 @@ export default function Dispositivos() {
   useEffect(() => {
     const obtenerDispositivos = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/admin/dispositivos");
+        const response = await fetch("http://backendalturos.onrender.com/api/admin/dispositivos");
 
         if (!response.ok) {
           throw new Error(`❌ Error HTTP: ${response.status}`);

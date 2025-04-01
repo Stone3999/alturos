@@ -20,7 +20,7 @@ export default function Producto() {
     setError(null);
 
     // Hacer la solicitud al backend usando el ID del producto
-    fetch(`http://localhost:5000/api/productos/${productId}`)
+    fetch(`http://backendalturos.onrender.com/api/productos/${productId}`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Producto no encontrado");
@@ -74,7 +74,7 @@ export default function Producto() {
     const car_cantidad = 1;
   
     try {
-      const response = await fetch("http://localhost:5000/api/carro/carrito", {
+      const response = await fetch("http://backendalturos.onrender.com/api/carro/carrito", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

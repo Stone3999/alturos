@@ -16,12 +16,6 @@ export default function Carrito() {
   const user = JSON.parse(localStorage.getItem("user"));
   const userId = user?.id ?? user?.uid;
 
-  useEffect(() => {
-    if (userId !== undefined && userId !== null) {
-      obtenerCarrito();
-    }
-  }, [userId, obtenerCarrito]); //
-
   const obtenerCarrito = async () => {
     if (!userId) {
       console.error("❌ No se encontró el userId en localStorage");
@@ -48,6 +42,14 @@ export default function Carrito() {
       setCarrito([]);
     }
   };
+
+  useEffect(() => {
+    if (userId !== undefined && userId !== null) {
+      obtenerCarrito();
+    }
+  }, [userId, obtenerCarrito]); //
+
+  
 
   const aumentarCantidad = async (prod_id, stock_actual, cantidad_actual) => {
     if (cantidad_actual >= stock_actual) {

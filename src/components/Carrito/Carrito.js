@@ -24,7 +24,7 @@ export default function Carrito() {
     }
 
     try {
-      const response = await fetch(`http://backendalturos.onrender.com/api/carro/${userId}`);
+      const response = await fetch(`https://backendalturos.onrender.com/api/carro/${userId}`);
 
       if (!response.ok) {
         if (response.status === 404) {
@@ -60,7 +60,7 @@ export default function Carrito() {
     }
 
     try {
-      const response = await fetch(`http://backendalturos.onrender.com/api/carro/agregar`, {
+      const response = await fetch(`https://backendalturos.onrender.com/api/carro/agregar`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ us_id: userId, prod_id, car_cantidad: 1 }),
@@ -78,7 +78,7 @@ export default function Carrito() {
     }
 
     try {
-      const response = await fetch(`http://backendalturos.onrender.com/api/carro/disminuir`, {
+      const response = await fetch(`https://backendalturos.onrender.com/api/carro/disminuir`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ us_id: userId, prod_id }),
@@ -92,7 +92,7 @@ export default function Carrito() {
 
   const eliminarProducto = async (prod_id) => {
     try {
-      const response = await fetch(`http://backendalturos.onrender.com/api/carro/eliminar/${userId}/${prod_id}`, {
+      const response = await fetch(`https://backendalturos.onrender.com/api/carro/eliminar/${userId}/${prod_id}`, {
         method: "DELETE",
       });
 
@@ -122,7 +122,7 @@ export default function Carrito() {
     setProcesandoPago(true);
 
     try {
-      const response = await fetch("http://backendalturos.onrender.com/api/carro/pagar", {
+      const response = await fetch("https://backendalturos.onrender.com/api/carro/pagar", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ us_id: userId }),

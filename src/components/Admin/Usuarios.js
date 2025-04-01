@@ -15,7 +15,7 @@ export default function Usuarios() {
   // Obtener Usuarios desde la API
   const obtenerUsuarios = async () => {
     try {
-      const response = await fetch("http://backendalturos.onrender.com/api/admin/usuarios");
+      const response = await fetch("https://backendalturos.onrender.com/api/admin/usuarios");
 
       if (!response.ok) {
         throw new Error(`❌ Error HTTP: ${response.status}`);
@@ -34,7 +34,7 @@ export default function Usuarios() {
     if (!window.confirm("¿Estás seguro de eliminar este Usuario?")) return;
 
     try {
-      const response = await fetch(`http://backendalturos.onrender.com/api/admin/usuarios/${id_us}`, {
+      const response = await fetch(`https://backendalturos.onrender.com/api/admin/usuarios/${id_us}`, {
         method: "DELETE",
       });
 
@@ -52,7 +52,7 @@ export default function Usuarios() {
   // Cambiar rol de Usuario
   const cambiarRol = async (id_us, nuevoRol) => {
     try {
-      const response = await fetch(`http://backendalturos.onrender.com/api/admin/usuarios/${id_us}`, {
+      const response = await fetch(`https://backendalturos.onrender.com/api/admin/usuarios/${id_us}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ us_tipo: nuevoRol }),

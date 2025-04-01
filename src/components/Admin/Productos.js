@@ -18,7 +18,7 @@ export default function Productos() {
   // Obtener todos los productos desde la API
   const obtenerProductos = async () => {
     try {
-      const response = await fetch("http://backendalturos.onrender.com/api/productos");
+      const response = await fetch("https://backendalturos.onrender.com/api/productos");
 
       if (!response.ok) {
         throw new Error(`❌ Error HTTP: ${response.status}`);
@@ -37,7 +37,7 @@ export default function Productos() {
     if (!window.confirm("¿Estás seguro de eliminar este producto?")) return;
 
     try {
-      const response = await fetch(`http://backendalturos.onrender.com/api/productos/producto/${prod_id}`, {
+      const response = await fetch(`https://backendalturos.onrender.com/api/productos/producto/${prod_id}`, {
         method: "DELETE",
       });
 
@@ -142,7 +142,7 @@ const generarPDF = () => {
   const handleUpdate = async () => {
     try {
       const response = await fetch(
-        `http://backendalturos.onrender.com/api/productos/producto/${productoEditado.prod_id}`,
+        `https://backendalturos.onrender.com/api/productos/producto/${productoEditado.prod_id}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },

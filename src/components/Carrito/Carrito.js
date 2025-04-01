@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { FaMinus, FaPlus, FaTimesCircle } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
 import AlturOSImage from "../../assets/AlturOS.jpg";
 import "./carrito.css";
+
 
 export default function Carrito() {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ export default function Carrito() {
   const user = JSON.parse(localStorage.getItem("user"));
   const userId = user?.id ?? user?.uid;
 
-  const obtenerCarrito = async () => {
+  const obtenerCarrito = useCallback(async () => {
     if (!userId) {
       console.error("❌ No se encontró el userId en localStorage");
       return;
@@ -41,13 +42,14 @@ export default function Carrito() {
       console.error("❌ Error de conexión con el servidor:", error);
       setCarrito([]);
     }
-  };
+  }, [userId]); // Añadimos `userId` como dependencia
 
   useEffect(() => {
     if (userId !== undefined && userId !== null) {
       obtenerCarrito();
     }
-  }, [userId, obtenerCarrito]); //
+  }, [userId, obtenerCarrito]);  // 'obtenerCarrito' está envuelta en `useCallback`
+
 
   
 

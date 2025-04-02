@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { FaShoppingCart, FaBars } from "react-icons/fa";
+import { FaBars, FaShoppingCart, FaUser } from "react-icons/fa";
 import { MdHealthAndSafety } from "react-icons/md";
-import "./dashboard.css"; // Importamos los estilos
+import { useNavigate } from "react-router-dom";
 import AlturOSImage from "../../assets/AlturOS.jpg"; // Imagen del dispositivo
 import ElderlyImage from "../../assets/elderly.jpg"; // Imagen de los viejitos
+import "./dashboard.css"; // Importamos los estilos
 
 export default function Dashboard({ onLogout }) {
   const navigate = useNavigate();
@@ -15,6 +15,9 @@ export default function Dashboard({ onLogout }) {
     navigate("/producto");
   };
 
+  const handleUser = () => {
+    navigate("/pacientes");
+  };
   // Función para redirigir a Carrito.js
   const handleCartClick = () => {
     navigate("/carrito");
@@ -32,6 +35,7 @@ export default function Dashboard({ onLogout }) {
       <div className="dashboard-header">
         <h1>AlturOS</h1>
         <div className="icon-container">
+          <FaUser onClick={handleUser} style={{cursor: "pointer"}} />
           {/* Ícono del carrito */}
           <FaShoppingCart onClick={handleCartClick} style={{ cursor: "pointer" }} />
 

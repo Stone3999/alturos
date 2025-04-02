@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { getDatabase, onValue, ref, set } from "firebase/database";
+import { collection, doc, getDocs, getFirestore, query, setDoc, where } from "firebase/firestore"; // Importa getDocs en lugar de get
 
 // 🔹 Configuración de Firebase
 const firebaseConfig = {
@@ -18,6 +19,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 const database = getDatabase(app); // Conexión a Realtime Database
+const firestore = getFirestore(app); // Conexión a Firestore
 
 // 🔹 Función para iniciar sesión con Google
 export const signInWithGoogle = async () => {
@@ -78,6 +80,34 @@ export const getBpmData = (callback) => {
   });
 };
 
+// 🔹 Función para agregar un nuevo paciente (usuario) en Firestore
+export const addPaciente = async (paciente) => {
+  try {
+    const pacienteRef = doc(firestore, "pacientes", paciente.id);  // Crear documento con el ID del paciente
+    await setDoc(pacienteRef, paciente);  // Guardar los datos del paciente en Firestore
+    console.log("✅ Paciente agregado correctamente en Firestore.");
+  } catch (error) {
+    console.error("❌ Error agregando paciente en Firestore: ", error);
+  }
+};
 
-export { auth, database, provider };
+// 🔹 Función para obtener los pacientes asociados a un cuidador en Firestore
+export const getPacientesByCuidador = async (cuidadorId) => {
+  try {
+    const pacientesRef = collection(firestore, "pacientes");  // Colección de pacientes
+    const q = query(pacientesRef, where("cuidadorId", "==", cuidadorId));  // Filtrar por ID del cuidador
+    const querySnapshot = await getDocs(q);  // Usa getDocs para obtener una colección de documentos
+    const pacientes = [];
+
+    querySnapshot.forEach((doc) => {
+      pacientes.push(doc.data());  // Agregar los pacientes al array
+    });
+
+    return pacientes;
+  } catch (error) {
+    console.error("❌ Error obteniendo pacientes: ", error);
+  }
+};
+
+export { auth, database, firestore, provider };
 

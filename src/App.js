@@ -17,6 +17,7 @@ import Dashboard from "./components/Dashboard/Dashboard";
 import Login from "./components/Login/Login";
 import Producto from "./components/Producto/Producto";
 import Registro from "./components/Registro/Registro";
+import Pacientes from "./components/Pacientes/Pacientes";
 
 import { useNavigate } from "react-router-dom";
 import AuthWrapper from "./AuthWrapper";
@@ -92,6 +93,13 @@ function App() {
             isAuthenticated && !isAdmin ? <Carrito /> : <Navigate to="/" />
           }
         />
+        <Route
+          path="/pacientes"
+          element={
+            isAuthenticated && !isAdmin ? <Pacientes /> : <Navigate to="/" />
+          }
+        />
+
         <Route
           path="/producto"
           element={

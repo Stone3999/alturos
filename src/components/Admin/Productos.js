@@ -140,6 +140,16 @@ const generarPDF = () => {
 
   // 🔹 Enviar actualización del producto a la base de datos
   const handleUpdate = async () => {
+    // Asegúrate de que los datos sean del tipo correcto
+    const prod_precio = parseFloat(productoEditado.prod_precio);  // Convertir a número decimal
+    const prod_stock = parseInt(productoEditado.prod_stock, 10); // Convertir a número entero
+  
+    // Validar si los datos son correctos
+    if (isNaN(prod_precio) || isNaN(prod_stock) || prod_precio <= 0 || prod_stock < 0) {
+      alert("❌ Los valores de precio o stock no son válidos.");
+      return;
+    }
+  
     try {
       const response = await fetch(
         `https://backendalturos.onrender.com/api/productos/producto/${productoEditado.prod_id}`,
@@ -149,14 +159,14 @@ const generarPDF = () => {
           body: JSON.stringify({
             prod_nom: productoEditado.prod_nom,
             prod_desc: productoEditado.prod_desc,
-            prod_precio: productoEditado.prod_precio,
-            prod_stock: productoEditado.prod_stock,
+            prod_precio: prod_precio,  // Asegurando que es un número decimal
+            prod_stock: prod_stock,    // Asegurando que es un número entero
           }),
         }
       );
-
+  
       if (!response.ok) throw new Error("❌ No se pudo actualizar el producto.");
-
+  
       alert("✅ Producto actualizado correctamente");
       setProductoEditado(null);
       obtenerProductos(); // Recargar lista de productos
@@ -164,6 +174,8 @@ const generarPDF = () => {
       console.error("❌ Error al actualizar producto:", error);
     }
   };
+  
+  
 
   return (
     <div className="admin-container">

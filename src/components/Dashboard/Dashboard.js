@@ -37,7 +37,7 @@ export default function Dashboard({ onLogout }) {
       const userId = user.id;
   
       // Hacer la solicitud POST para cerrar sesión y actualizar us_logged a 0
-      const response = await fetch("http://backendalturos.onrender.com/api/auth/logout", {
+      const response = await fetch("https://backendalturos.onrender.com/api/auth/logout", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

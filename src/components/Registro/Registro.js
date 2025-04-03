@@ -9,7 +9,7 @@ const TIPO_USUARIO = {
 };
 
 const PASSWORD_REGEX = /^(?=.*[0-9])(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z0-9!@#$%^&*(),.?":{}|<>]{8,}$/;
-const API_URL = "http://backendalturos.onrender.com/api/auth/register";
+const API_URL = "https://backendalturos.onrender.com/api/auth/register";
 
 export default function Registro() {
   const initialFormState = {

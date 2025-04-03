@@ -20,7 +20,7 @@ export default function Carrito() {
   const obtenerSaldoUsuario = async () => {
     try {
       console.log("🔍 Consultando saldo de userId:", userId);
-      const res = await fetch("http://backendalturos.onrender.com/api/carro/saldo", {
+      const res = await fetch("https://backendalturos.onrender.com/api/carro/saldo", {
         method: "POST", // Cambié a POST
         headers: {
           "Content-Type": "application/json", // Asegúrate de enviar los datos como JSON
@@ -150,7 +150,7 @@ export default function Carrito() {
     setProcesandoPago(true);
   
     try {
-      const response = await fetch("http://backendalturos.onrender.com/api/carro/pagar", {
+      const response = await fetch("https://backendalturos.onrender.com/api/carro/pagar", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ us_id: userId }),

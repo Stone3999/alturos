@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import AlturOSImage from "../../assets/AlturOS.jpg";
 import "./carrito.css";
 
-
 export default function Carrito() {
   const navigate = useNavigate();
 
@@ -12,10 +11,35 @@ export default function Carrito() {
   const [subtotal, setSubtotal] = useState(0);
   const [iva, setIva] = useState(0);
   const [total, setTotal] = useState(0);
-  const [procesandoPago, setProcesandoPago] = useState(false); // NUEVO
+  const [procesandoPago, setProcesandoPago] = useState(false);
+  const [saldoUsuario, setSaldoUsuario] = useState(null); // NUEVO
 
   const user = JSON.parse(localStorage.getItem("user"));
   const userId = user?.id ?? user?.uid;
+
+  const obtenerSaldoUsuario = async () => {
+    try {
+      console.log("🔍 Consultando saldo de userId:", userId);
+      const res = await fetch("http://localhost:5000/api/carro/saldo", {
+        method: "POST", // Cambié a POST
+        headers: {
+          "Content-Type": "application/json", // Asegúrate de enviar los datos como JSON
+        },
+        body: JSON.stringify({ us_id: userId }), // Pasando us_id en el cuerpo
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setSaldoUsuario(data.saldo); // Aquí se obtiene el saldo del backend
+        console.log("💰 Saldo actual:", data.saldo);
+      } else {
+        console.error(data.message || "Error desconocido");
+      }
+    } catch (err) {
+      console.error("❌ Error obteniendo saldo:", err);
+    }
+  };
+  
+
 
   const obtenerCarrito = useCallback(async () => {
     if (!userId) {
@@ -32,7 +56,7 @@ export default function Carrito() {
           calcularTotales([]);
           return;
         }
-        throw new Error(`Error: ${response.status}`);
+        throw new Error('Error: ${response.status}');
       }
 
       const data = await response.json();
@@ -42,31 +66,32 @@ export default function Carrito() {
       console.error("❌ Error de conexión con el servidor:", error);
       setCarrito([]);
     }
-  }, [userId]); // Añadimos `userId` como dependencia
+  }, [userId]);
 
   useEffect(() => {
     if (userId !== undefined && userId !== null) {
       obtenerCarrito();
+      obtenerSaldoUsuario(); // NUEVO
     }
-  }, [userId, obtenerCarrito]);  // 'obtenerCarrito' está envuelta en `useCallback`
-
-
-  
+  }, [userId, obtenerCarrito]);
 
   const aumentarCantidad = async (prod_id, stock_actual, cantidad_actual) => {
     if (cantidad_actual >= stock_actual) {
-      alert("⚠️ No puedes agregar más de lo que hay en stock.");
+      alert("⚠ No puedes agregar más de lo que hay en stock.");
       return;
     }
 
     try {
-      const response = await fetch(`https://backendalturos.onrender.com/api/carro/agregar`, {
+      const response = await fetch('https://backendalturos.onrender.com/api/carro/agregar', {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ us_id: userId, prod_id, car_cantidad: 1 }),
       });
 
-      if (response.ok) obtenerCarrito();
+      if (response.ok) {
+        obtenerCarrito();
+        obtenerSaldoUsuario(); // si deseas que se actualice al cambiar cantidades
+      }
     } catch (error) {
       console.error("❌ Error aumentando cantidad:", error);
     }
@@ -78,13 +103,16 @@ export default function Carrito() {
     }
 
     try {
-      const response = await fetch(`https://backendalturos.onrender.com/api/carro/disminuir`, {
+      const response = await fetch('https://backendalturos.onrender.com/api/carro/disminuir', {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ us_id: userId, prod_id }),
       });
 
-      if (response.ok) obtenerCarrito();
+      if (response.ok) {
+        obtenerCarrito();
+        obtenerSaldoUsuario();
+      }
     } catch (error) {
       console.error("❌ Error disminuyendo cantidad:", error);
     }
@@ -92,7 +120,7 @@ export default function Carrito() {
 
   const eliminarProducto = async (prod_id) => {
     try {
-      const response = await fetch(`https://backendalturos.onrender.com/api/carro/eliminar/${userId}/${prod_id}`, {
+      const response = await fetch('https://backendalturos.onrender.com/api/carro/eliminar/${userId}/${prod_id}', {
         method: "DELETE",
       });
 
@@ -103,54 +131,66 @@ export default function Carrito() {
   };
 
   const calcularTotales = (productos) => {
-    const subtotalCalculado = productos.reduce((acc, prod) => acc + prod.prod_precio * prod.car_cantidad, 0);
-    const ivaCalculado = subtotalCalculado * 0.16;
-    const totalCalculado = subtotalCalculado + ivaCalculado;
-
+    const totalCalculado = productos.reduce((acc, prod) => acc + prod.prod_precio * prod.car_cantidad, 0);
+    const subtotalCalculado = totalCalculado * 0.84;
+    const ivaCalculado = totalCalculado * 0.16;
+  
     setSubtotal(subtotalCalculado);
     setIva(ivaCalculado);
     setTotal(totalCalculado);
   };
+  
 
-  // 🔹 Procesar pago
   const procesarPago = async () => {
     if (carrito.length === 0) {
-      alert("⚠️ No hay productos en el carrito.");
+      alert("⚠ No hay productos en el carrito.");
       return;
     }
-
+  
     setProcesandoPago(true);
-
+  
     try {
-      const response = await fetch("https://backendalturos.onrender.com/api/carro/pagar", {
+      const response = await fetch("http://localhost:5000/api/carro/pagar", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ us_id: userId }),
       });
-
+  
+      const result = await response.json(); // Asegúrate de que la respuesta sea JSON
+  
       if (!response.ok) {
-        throw new Error("No se pudo procesar el pago.");
-      }
-
-      // Simula una pequeña espera de "procesamiento"
-      setTimeout(() => {
-        alert("✅ Compra realizada con éxito");
-        setCarrito([]);
-        setSubtotal(0);
-        setIva(0);
-        setTotal(0);
+        alert(result.error || "❌ Error al procesar el pago");
         setProcesandoPago(false);
-      }, 1500);
+        return;
+      }
+  
+      alert(result.message || "✅ Compra realizada con éxito");
+  
+      setCarrito([]);
+      setSubtotal(0);
+      setIva(0);
+      setTotal(0);
+      setProcesandoPago(false);
+  
+      await obtenerSaldoUsuario(); // NUEVO
     } catch (error) {
       console.error("❌ Error al procesar el pago:", error);
       alert("❌ Error al procesar el pago");
       setProcesandoPago(false);
     }
   };
+  
 
   return (
     <div className="carrito-container">
-      <h2>Carrito</h2>
+      <div className="info-usuario">
+        <h2>Carrito</h2>
+        {saldoUsuario !== null && (
+          <p className="saldo-usuario">
+          💰 Saldo disponible: ${Number(saldoUsuario).toFixed(2)}
+        </p>
+        )}
+      </div>
 
       {carrito.length > 0 ? (
         carrito.map((item) => (
@@ -160,17 +200,11 @@ export default function Carrito() {
               <h3>{item.prod_nom}</h3>
               <div className="cantidad-container">
                 <span>Cantidad</span>
-                <button
-                  className="cantidad-btn"
-                  onClick={() => aumentarCantidad(item.prod_id, item.prod_stock, item.car_cantidad)}
-                >
+                <button className="cantidad-btn" onClick={() => aumentarCantidad(item.prod_id, item.prod_stock, item.car_cantidad)}>
                   <FaPlus />
                 </button>
                 <span className="cantidad">{item.car_cantidad}</span>
-                <button
-                  className="cantidad-btn"
-                  onClick={() => disminuirCantidad(item.prod_id, item.car_cantidad)}
-                >
+                <button className="cantidad-btn" onClick={() => disminuirCantidad(item.prod_id, item.car_cantidad)}>
                   <FaMinus />
                 </button>
               </div>
@@ -185,21 +219,19 @@ export default function Carrito() {
         <p className="empty-cart">Tu carrito está vacío</p>
       )}
 
-      {/* Totales */}
       <div className="totales">
         <p>Subtotal: <span>${subtotal.toFixed(2)}</span></p>
         <p>IVA (16%): <span>${iva.toFixed(2)}</span></p>
         <p><strong>Total:</strong> <span>${total.toFixed(2)}</span></p>
       </div>
 
-      {/* Botón de pago o mensaje de procesamiento */}
       {procesandoPago ? (
         <p className="procesando-text">Procesando compra...</p>
       ) : (
         <button className="pagar-btn" onClick={procesarPago}>Pagar</button>
       )}
-                    <button className="boton-volver-admin" onClick={() => navigate("/admin")}>Volver</button>
 
+      <button className="boton-volver-admin" onClick={() => navigate("/admin")}>Volver</button>
     </div>
   );
 }

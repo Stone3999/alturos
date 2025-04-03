@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FaBars, FaShoppingCart, FaUser } from "react-icons/fa";
+import { FaBars, FaShoppingCart } from "react-icons/fa";
 import { MdHealthAndSafety } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import AlturOSImage from "../../assets/AlturOS.jpg"; // Imagen del dispositivo
@@ -14,20 +14,60 @@ export default function Dashboard({ onLogout }) {
   const handleImageClick = () => {
     navigate("/producto");
   };
-
-  const handleUser = () => {
-    navigate("/pacientes");
-  };
   // Función para redirigir a Carrito.js
   const handleCartClick = () => {
     navigate("/carrito");
   };
 
   // Función para cerrar sesión
-  const handleLogout = () => {
-    onLogout(); // Llama a la función de cierre de sesión
-    navigate("/"); // Redirige al login
+  const handleLogout = async () => {
+    try {
+      // Verificar que el usuario y el token están disponibles
+      const user = JSON.parse(localStorage.getItem("user"));
+      const token = localStorage.getItem("token");
+  
+      console.log("User:", user);  // Verifica si el usuario se obtiene correctamente
+      console.log("Token:", token); // Verifica si el token se obtiene correctamente
+  
+      if (!user || !token) {
+        console.error("❌ No se encontró la información del usuario o token");
+        return;
+      }
+  
+      const userId = user.id;
+  
+      // Hacer la solicitud POST para cerrar sesión y actualizar us_logged a 0
+      const response = await fetch("http://localhost:5000/api/auth/logout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`, // Enviar el token
+        },
+        body: JSON.stringify({ userId }), // Enviar el userId
+      });
+  
+      const result = await response.json();
+  
+      console.log("Logout result:", result);  // Verifica la respuesta del servidor
+  
+      if (response.ok) {
+        console.log(result.message); // Mensaje del servidor
+  
+        // Eliminar los datos del usuario y token de localStorage
+        localStorage.removeItem("user");
+        localStorage.removeItem("token");
+  
+        onLogout(); // Llamar a la función de cierre de sesión
+        navigate("/"); // Redirigir al login
+      } else {
+        console.error(result.error); // Manejo de error
+      }
+    } catch (error) {
+      console.error("Error al cerrar sesión:", error);
+    }
   };
+  
+  
 
   return (
     <div className="dashboard-container">
@@ -35,7 +75,6 @@ export default function Dashboard({ onLogout }) {
       <div className="dashboard-header">
         <h1>AlturOS</h1>
         <div className="icon-container">
-          <FaUser onClick={handleUser} style={{cursor: "pointer"}} />
           {/* Ícono del carrito */}
           <FaShoppingCart onClick={handleCartClick} style={{ cursor: "pointer" }} />
 

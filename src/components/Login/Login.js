@@ -18,7 +18,7 @@ export default function Login({ onLogin }) {
 
     try {
       // Hacemos la solicitud al backend para el login
-      const response = await fetch("https://backendalturos.onrender.com/api/auth/login", {
+      const response = await fetch("http://localhost:5000/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ us_mail: email, us_pass: password }),
